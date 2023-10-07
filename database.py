@@ -33,3 +33,12 @@ def get_all_todos() -> List[Todo]:
     for result in results:
         todos.append(Todo(*result))
     return todos
+
+def delete_todo(position):
+    c.execute('select count(*) from todos')
+    count = c.fetchone()[0]
+
+    with conn:
+        c.execute("DELETE from todos WHERE position=:position", {"position": position})
+        for pos in range(position+1, count):
+            change_position(pos, pos-1, False)
