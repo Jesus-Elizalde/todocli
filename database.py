@@ -25,3 +25,11 @@ def insert_todo(todo:Todo):
     with conn:
         c.execute("INSERT INTO todo VALUES (:task, :category, :date_added, :date_completed, :status, :position)",
             {'task': todo.task, 'category': todo.category, 'date_added': todo.date_added, 'date_completed': todo.date_completed, 'status': todo.status, 'position': todo.position})
+
+def get_all_todos() -> List[Todo]:
+    c.execute('select * from todos')
+    results = c.fetchall()
+    todos = []
+    for result in results:
+        todos.append(Todo(*result))
+    return todos
