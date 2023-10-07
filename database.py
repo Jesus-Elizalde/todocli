@@ -17,3 +17,11 @@ def create_table():
     )""")
 
 create_table()
+
+def insert_todo(todo:Todo):
+    c.execute("select count(*) FROM todo")
+    count = c.fetchone()[0]
+    todo.position = count if count else 0
+    with conn:
+        c.execute("INSERT INTO todo VALUES (:task, :category, :date_added, :date_completed, :status, :position)",
+            {'task': todo.task, 'category': todo.category, 'date_added': todo.date_added, 'date_completed': todo.date_completed, 'status': todo.status, 'position': todo.position})
